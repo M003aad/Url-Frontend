@@ -1,26 +1,28 @@
 <!-- src/routes/+layout.svelte -->
 <script lang="ts">
-	import '../app.css';
-	import { page } from '$app/state';
+  import '../app.css';
+  import { page } from '$app/state';
 
-	// Default session state (can be linked to an Auth Store)
-	let user = $state<{ firstName: string; email: string } | null>(null);
-	let isMobileMenuOpen = $state(false);
+  // Define User type
+  type User = { firstName: string; email: string };
 
-	async function handleLogout() {
-		try {
-			await fetch('http://localhost:5000/auth/logout', {
-				method: 'POST',
-				credentials: 'include'
-			});
-			user = null;
-			window.location.href = '/login';
-		} catch (err) {
-			console.error('Logout failed:', err);
-		}
-	}
+  let user = $state<User | null>(null);
+  let isMobileMenuOpen = $state(false);
 
-	let { children } = $props();
+  async function handleLogout() {
+    try {
+      await fetch('http://localhost:5000/auth/logout', {
+        method: 'POST',
+        credentials: 'include'
+      });
+      user = null;
+      window.location.href = '/login';
+    } catch (err) {
+      console.error('Logout failed:', err);
+    }
+  }
+
+  let { children } = $props();
 </script>
 
 <div class="min-h-screen flex flex-col bg-slate-50 text-slate-800 font-sans">
@@ -31,12 +33,9 @@
 				<!-- Logo -->
 				<a
 					href="/"
-					class="flex items-center gap-2 font-bold text-xl text-indigo-600 hover:text-indigo-700 transition"
+					class="flex items-center gap-2 font-bold text-xl text-indigo-400 hover:text-indigo-500 transition"
 				>
-					<!-- <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-          </svg> -->
-					<span>ShortURL</span>
+					<img src="./assets/favicon.png" alt="Logo" class="w-25 h-25 object-contain " />
 				</a>
 
 				<!-- Desktop Navigation Links -->
